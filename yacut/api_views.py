@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from flask import jsonify, request, Response
 
 from yacut import app, db
