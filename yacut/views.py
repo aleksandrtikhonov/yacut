@@ -9,20 +9,20 @@ from yacut.services import get_unique_short_id
 @app.route('/', methods=['GET', 'POST'])
 def index_view() -> str:
     form = URL_mapForm()
-    if form.validate_on_submit():
-        short_id = form.custom_id.data or get_unique_short_id()
-        link_urls = URL_map(
-            original=form.original_link.data,
-            short=short_id
-        )
-        db.session.add(link_urls)
-        db.session.commit()
-        short_url = url_for('redirect_view', custom_id=short_id,
-                            _external=True)
-        message = ('<p>Ваша новая ссылка готова: '
-                   f'<a href="{short_url}">{short_url}</a></p>')
-        flash(message)
+    if not form.validate_on_submit():
         return render_template('index.html', form=form)
+    short_id = form.custom_id.data or get_unique_short_id()
+    link_urls = URL_map(
+        original=form.original_link.data,
+        short=short_id
+    )
+    db.session.add(link_urls)
+    db.session.commit()
+    short_url = url_for('redirect_view', custom_id=short_id,
+                        _external=True)
+    message = ('<p>Ваша новая ссылка готова: '
+               f'<a href="{short_url}">{short_url}</a></p>')
+    flash(message)
     return render_template('index.html', form=form)
 
 

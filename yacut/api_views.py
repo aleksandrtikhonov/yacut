@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from http import HTTPStatus
+
 from flask import jsonify, request, Response
 
 from yacut import app, db
@@ -19,11 +21,11 @@ def create_url_map() -> tuple[Response, int]:
     link_urls.from_dict(data)
     db.session.add(link_urls)
     db.session.commit()
-    return jsonify(link_urls.to_dict()), 201
+    return jsonify(link_urls.to_dict()), HTTPStatus.CREATED
 
 
 @app.route('/api/id/<string:short_id>/', methods=['GET'])
 def get_url(short_id: str) -> tuple[Response, int]:
     url = get_url_through_custom_id(short_id)
     validate_url_exist(url)
-    return jsonify(url.to_dict(only_short=True)), 200
+    return jsonify(url.to_dict(only_short=True)), HTTPStatus.OK

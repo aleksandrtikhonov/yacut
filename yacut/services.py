@@ -16,5 +16,4 @@ def is_custom_id_exist(custom_id: str) -> bool:
 
 
 def get_url_through_custom_id(custom_id: str) -> URL_map:
-    url = URL_map.query.filter_by(short=custom_id).first()
-    return url
+    return URL_map.query.filter_by(short=custom_id).first()
